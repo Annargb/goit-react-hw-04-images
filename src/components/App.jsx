@@ -14,7 +14,7 @@ export const App = () => {
   const [newRequest, setNewRequest] = useState('');
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
-  const [error, setError] = useState(false);
+  const [fetchError, setFetchError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [total, setTotal] = useState(0);
 
@@ -28,7 +28,7 @@ export const App = () => {
         let newRequest = request.split('').slice(14).join('');
 
         setIsLoading(true);
-        setError(false);
+        setFetchError(false);
         setNewRequest(newRequest);
 
         const newImages = await fetchImages(newRequest, page);
@@ -36,7 +36,8 @@ export const App = () => {
         setImages(prevState => [...prevState, newImages.hits]);
         setTotal(newImages.totalHits);
       } catch (error) {
-        setError(true);
+        console.log(fetchError);
+        setFetchError(true);
         toast.error('Oops, Something went wrong! Try reloading the page!', {
           duration: 3500,
           position: 'top-right',
