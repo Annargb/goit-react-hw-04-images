@@ -33,7 +33,7 @@ export const App = () => {
 
         const newImages = await fetchImages(newRequest, page);
 
-        setImages(prevState => [...prevState, newImages.hits]);
+        setImages(prevState => [...prevState, ...newImages.hits]);
         setTotal(newImages.totalHits);
       } catch (error) {
         console.log(fetchError);
