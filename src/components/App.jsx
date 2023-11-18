@@ -48,7 +48,7 @@ export const App = () => {
     }
 
     getImages();
-  }, [page, request]);
+  }, [page, request, fetchError]);
 
   const handleSubmit = event => {
     event.preventDefault();
