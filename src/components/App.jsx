@@ -25,35 +25,30 @@ export const App = () => {
 
     async function getImages() {
       try {
-        let newRequest = request.split('').slice(14).join('');
-        setIsLoading(prevState => !prevState);
-        setFetchError(prevState => !prevState);
+        let updatedRequest = request.split('').slice(14).join('');
 
-        // setIsLoading(true);
-        // setFetchError(false);
-        setNewRequest(newRequest);
+        setIsLoading(true);
+        setFetchError(false);
+        setNewRequest(updatedRequest);
 
-        const newImages = await fetchImages(newRequest, page);
+        const newImages = await fetchImages(updatedRequest, page);
 
         setImages(prevState => [...prevState, ...newImages.hits]);
         setTotal(newImages.totalHits);
       } catch (error) {
-        console.log(error);
-        setFetchError(prevState => !prevState);
-        // setFetchError(true);
-        console.log(fetchError);
+        setFetchError(true);
+        // console.log(fetchError);
         toast.error('Oops, Something went wrong! Try reloading the page!', {
           duration: 3500,
           position: 'top-right',
         });
       } finally {
-        setIsLoading(prevState => !prevState);
-        // setIsLoading(false);
+        setIsLoading(false);
       }
     }
 
     getImages();
-  }, [page, request, fetchError]);
+  }, [page, request]);
 
   const handleSubmit = event => {
     event.preventDefault();
