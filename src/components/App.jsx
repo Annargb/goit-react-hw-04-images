@@ -14,7 +14,7 @@ export const App = () => {
   const [newRequest, setNewRequest] = useState('');
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
-  const [fetchError, setFetchError] = useState(false);
+  const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [total, setTotal] = useState(0);
 
@@ -28,7 +28,7 @@ export const App = () => {
         let updatedRequest = request.split('').slice(14).join('');
 
         setIsLoading(true);
-        setFetchError(false);
+        setError(false);
         setNewRequest(updatedRequest);
 
         const newImages = await fetchImages(updatedRequest, page);
@@ -36,8 +36,7 @@ export const App = () => {
         setImages(prevState => [...prevState, ...newImages.hits]);
         setTotal(newImages.totalHits);
       } catch (error) {
-        setFetchError(true);
-        // console.log(fetchError);
+        setError(true);
         toast.error('Oops, Something went wrong! Try reloading the page!', {
           duration: 3500,
           position: 'top-right',
@@ -74,11 +73,15 @@ export const App = () => {
   return (
     <Wrapper>
       <Searchbar onSubmit={handleSubmit} />
-      {request !== '' && !images.length && !isLoading && (
-        <InfoMessage>
-          We didn't find any images for request '{newRequest}'
-        </InfoMessage>
-      )}
+      {!images.length &&
+        !error &&
+        request !== '' &&
+        !isLoading &&
+        newRequest !== '' && (
+          <InfoMessage>
+            We didn't find any images for request '{newRequest}'
+          </InfoMessage>
+        )}
       {images.length > 0 && <ImageGallery images={images} />}
       {isLoading && <Loader />}
       {0 < images.length && images.length < total && (
